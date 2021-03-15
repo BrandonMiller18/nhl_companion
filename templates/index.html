@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}NHL Companion | Dashboard{% endblock %}
+{% block description %}{% endblock %}
+{% set active_page = "index" %}
+{% block content %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var socket = io.connect('http://127.0.0.1:5000');
+
+    });
+</script>
+
+<div class="container">
+    
+    <div class="jumbotron ">
+            <h1 class="text-center">NHL Companion</h1>
+            <p class="pt-1">The NHL Companion is the best way to follow your favorite Hockey team. Check today's slate of games around the NHL, check the standings, and use our app to blast your Goal Horn when your team scores!</p>
+    </div>
+    
+
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card m-2 mt-3">
+                <div class="col-12 col-lg-12 mt-3 mb-3">
+                    <div class="card-header">
+                        <h2>Select your team.</h2>
+                    </div>
+                    <p>Follow your team's game with the NHL Companion! </p>
+
+                    <form action="{{ url_for('run') }}" method="POST">
+                        <div class="form-group">
+                            <select name="team" id="team" class="form-control">
+                                {% for team in abbreviations %}
+                                <option value="{{team['abbreviation']}}">{{team['abbreviation']}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-block"><strong>Start</strong></button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>           
+
+            <div class="card m-2 mt-3">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h2 class="card-title">Today's Slate</h2>
+                    </div>
+                    <p class="card-text">All of today's NHL action.</p>
+                    
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Home</th>
+                                <th></th>
+                                <th>Away</th>
+                            </tr>   
+                        </thead>    
+                        <tbody>                 
+                        {% for game in schedule %}
+                            {% set home = game['teams']['home']['team']['name'] %}
+                            {% set away = game['teams']['away']['team']['name'] %}
+                            {% if session['team_name'] == home or session['team_name'] == away %}
+                                <tr class="font-weight-bold bg-light">
+                                    <td>{{game['teams']['home']['team']['name']}} </td>
+                                    <td>vs.</td>
+                                    <td>{{game['teams']['away']['team']['name']}}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td>{{game['teams']['home']['team']['name']}} </td>
+                                    <td>vs.</td>
+                                    <td>{{game['teams']['away']['team']['name']}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="col-12 col-lg-6">
+            <div class="card m-2 mt-3">
+                <div class="card-body">
+                    <div class="card-header">
+                        <h2 class="card-title">Standings</h2>
+                    </div>
+                    <p class="card-text">Where does your team stack up?</p>
+                    {% for division in divisions %}
+                    <h4 class="card-text mt-1">
+                        {{division}}                        
+                    </h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="p-2">Team</th>
+                                <th class="p-2">GP</th>
+                                <th class="p-2">W</th>
+                                <th class="p-2">L</th>
+                                <th class="p-2">OT</th>
+                                <th class="p-2">Pts</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for team in standings %}
+                                {% if team['div'] == division and team['name'] == session['team_name'] %}
+                                <tr class="font-weight-bold bg-light">
+                                    <td class="p-2">{{team['name']}}</td>
+                                    <td class="p-2">{{team['gp']}}</td>
+                                    <td class="p-2">{{team['wins']}}</td>
+                                    <td class="p-2">{{team['losses']}}</td>
+                                    <td class="p-2">{{team['ot']}}</td>
+                                    <td class="p-2">{{team['pts']}}</td>
+                                </tr>
+                                {% else %}
+                                    {% if team['div'] == division %}
+                                    <tr>
+                                        <td class="p-2">{{team['name']}}</td>
+                                        <td class="p-2">{{team['gp']}}</td>
+                                        <td class="p-2">{{team['wins']}}</td>
+                                        <td class="p-2">{{team['losses']}}</td>
+                                        <td class="p-2">{{team['ot']}}</td>
+                                        <td class="p-2">{{team['pts']}}</td>
+                                    </tr>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endfor %}
+                </div>
+            </div> 
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

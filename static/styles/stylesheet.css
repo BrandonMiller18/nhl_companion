@@ -1,0 +1,31 @@
+.app__run {
+	height: 10px;
+	width: 100%;
+	animation: run 5s linear infinite;
+}
+
+@keyframes run {
+	0% {
+		width: 0%;
+	}
+
+	100% {
+		width: 100%;
+		background-color: #007bff;
+	}
+}
+
+.card.goal {
+	animation: goalBorder 1s linear infinite !important;
+	animation-direction: alternate;
+}
+
+@keyframes goalBorder {
+	0% {
+
+	}
+
+	100% {
+		border-color: red;
+	}
+}

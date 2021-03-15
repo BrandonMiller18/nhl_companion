@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>{% block title %}{% endblock %}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width initial-scale=1">
+	<meta name="Description" content="{% block description %}{% endblock %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<meta name="theme-color" content="#563d7c">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stylesheet.css') }}">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha384-JUh3U/xjnOlL/7MKh/FzORuvdTxBZuZJUFfG3A51H4GkBkXlS38nZh1jqXd2ElYN" crossorigin="anonymous"></script>
+
+
+</head>
+
+
+
+<nav class="navbar navbar-dark bg-dark sticky-top navbar-expand-lg pl-5">
+	<a class="navbar-brand" href="/">Home</a>
+	<div class="navbar-nav pl-5">
+		<a class="nav-link" href="#">NHL News</a>
+		<a class="nav-link" href="#">Run App</a>
+		<a class="nav-link" href="#">About</a>
+	</div>
+
+</nav>
+
+
+
+<body>
+
+
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	  {% if messages %}
+	    <ul class=flashes>
+	    {% for category, message in messages %}
+	      <div class="{{ category }}"><p>{{ message }}</p></div>
+	    {% endfor %}
+	    </ul>
+	  {% endif %}
+	{% endwith %}
+
+	{% block content %}{% endblock %}
+
+
+</body>
+</html>

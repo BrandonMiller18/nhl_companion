@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}NHL Companion | Goal Horn{% endblock %}
+{% block description %}{% endblock %}
+{% set active_page = "app" %}
+{% block content %}
+
+<script type="text/javascript">
+
+$(document).ready(function() { 
+
+	var socket = io.connect('http://127.0.0.1:5000');
+
+	$('#scoreboard').hide();
+	$("#goal").hide();
+
+	$('#run').on('click', function() {
+		socket.send($('#stream_delay').val());
+		$("#hide").hide();
+		return false; 
+	});
+
+	socket.on('status', function(game_status) {
+		$("#gamestatus").html(game_status);
+		$('#scoreboard').show();
+		$("#hide").hide();
+	});
+
+	socket.on('teams', function(away_team, home_team) {
+		$("#awayteam").html(away_team);
+		$("#hometeam").html(home_team);
+	});
+
+	socket.on('scores', function(away_score, home_score) {
+		$("#awayscore").html(away_score);
+		$("#homescore").html(home_score);
+	});
+
+	socket.on('goal', function() {
+		// $('#scoreboard').hide();
+		$('#goal').show();
+		$('div[id=flash]').toggleClass("goal")
+		console.log("there was a goal for your team!");
+	});
+
+	socket.on('goalover', function() {
+		// $('#scoreboard').show();
+		$('#goal').hide();
+		$('div[id=flash]').toggleClass("goal")
+		console.log("goal celebration is over :(");
+	});
+
+
+});
+
+
+</script>
+
+<div class="container">
+
+    <div class="jumbotron">
+            <h1 class="text-center">Lets go {{session['team_name']}}!</h1>
+            <p class="pt-1"></p>
+    </div>
+
+    <div id="hide" class="row">
+
+    	<div class="col-lg-6 col-sm-12 text-center">
+    		<h2>Run the App!</h2>
+    		<p class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultricies luctus enim. Fusce at ullamcorper erat. Etiam venenatis, diam at suscipit egestas, tellus ex viverra turpis, a vehicula velit mauris a erat. Ut sed ultrices odio, in commodo est. Curabitur tincidunt arcu massa, vitae consequat risus mollis ut. Nunc facilisis commodo lectus, sit amet tristique lorem semper sit amet. Donec ac ligula ligula. Nunc fringilla facilisis ex eu placerat. Ut bibendum suscipit tellus, in mollis eros semper ac. Nulla dignissim imperdiet elementum.</p>
+    	</div>
+
+    	<div class="col-lg-6 col-sm-12">
+	    	<div class="card">
+    			<div class="col-12 col-lg-12 mt-3 mb-3">
+	    			<form accept-charset="utf-8">
+	    				<div class="card-header">
+	    					<label class="" for="stream_delay"><h3>Set Stream Delay:</h3></label>
+	    				</div>
+    					<input id="stream_delay" class="mt-2 form-control" type="number" name="stream_delay" value="1">
+    					<button id="run" type="submit" class="btn btn-primary btn-lg m-2">Run</button>
+	    			</form>
+	    		</div>
+    		</div>
+    	</div>
+
+    </div>
+
+    <div id="scoreboard" class="row">
+    	<div class="col-12">
+    		<div id="flash" class="card">
+    			<div class="app__run">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="col-12">
+    	    <div id="goal" class="text-center mt-2">
+    			<img src="static/images/goal.gif" class="rounded" alt="Goal light">
+    		</div>
+    	</div>
+    	<div class="col-12 mt-2">
+    		<div id="flash" class="card">
+    			<div class="card-header">
+    				<h3>Game info</h3>
+    			</div>
+    			<div class="card-body">
+    				<table class="table">
+    					<thead>
+    						<tr>
+    							<th>Game Status</th>
+    							<th>Home</th>
+    							<th>Away</th>
+    						</tr>
+    					</thead>
+    					<tbody>
+    						<tr>
+    							<td id="gamestatus"></td>
+    							<td id="hometeam"></td>
+    							<td id="awayteam"></td>
+    						</tr>
+    					</tbody>
+    				</table>
+    			</div>
+    		</div>
+    		<div id="flash"class="card mt-2">
+    		 	<div class="card-header">
+    		 		<h3>Scoreboard</h3>
+    		 	</div>
+    			<div class="card-body">
+    				<table class="table">
+    					<thead class="text-center">
+    						<tr>
+    							<th>Home</th>
+    							<th>Away</th>
+    						</tr>
+    					</thead>
+    					<tbody class="text-center">
+    						<tr>
+								<td id="homescore"></td>
+								<td id="awayscore"></td>
+    						</tr>
+    					</tbody>
+    				</table>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+
+
+
+</div>
+
+
+{% endblock %}
