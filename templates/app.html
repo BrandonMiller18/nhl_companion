@@ -6,53 +6,49 @@
 
 <script type="text/javascript">
 
-$(document).ready(function() { 
+    $(document).ready(function() { 
 
-	var socket = io.connect('http://nhlcompanion.herokuapp.com/');
+    	var socket = io.connect({{ DOMAIN }});
 
-	$('#scoreboard').hide();
-	$("#goal").hide();
+    	$('#scoreboard').hide();
+    	$("#goal").hide();
 
-	$('#run').on('click', function() {
-		socket.send($('#stream_delay').val());
-		$("#hide").hide();
-		return false; 
-	});
+    	$('#run').on('click', function() {
+    		socket.send($('#stream_delay').val());
+    		$("#hide").hide();
+    		return false; 
+    	});
 
-	socket.on('status', function(game_status) {
-		$("#gamestatus").html(game_status);
-		$('#scoreboard').show();
-		$("#hide").hide();
-	});
+    	socket.on('status', function(game_status) {
+    		$("#gamestatus").html(game_status);
+    		$('#scoreboard').show();
+    		$("#hide").hide();
+    	});
 
-	socket.on('teams', function(away_team, home_team) {
-		$("#awayteam").html(away_team);
-		$("#hometeam").html(home_team);
-	});
+    	socket.on('teams', function(away_team, home_team) {
+    		$("#awayteam").html(away_team);
+    		$("#hometeam").html(home_team);
+    	});
 
-	socket.on('scores', function(away_score, home_score) {
-		$("#awayscore").html(away_score);
-		$("#homescore").html(home_score);
-	});
+    	socket.on('scores', function(away_score, home_score) {
+    		$("#awayscore").html(away_score);
+    		$("#homescore").html(home_score);
+    	});
 
-	socket.on('goal', function() {
-		// $('#scoreboard').hide();
-		$('#goal').show();
-		$('div[id=flash]').toggleClass("goal")
-		console.log("there was a goal for your team!");
-	});
+    	socket.on('goal', function() {
+    		// $('#scoreboard').hide();
+    		$('#goal').show();
+    		$('div[id=flash]').toggleClass("goal")
+    		console.log("there was a goal for your team!");
+    	});
 
-	socket.on('goalover', function() {
-		// $('#scoreboard').show();
-		$('#goal').hide();
-		$('div[id=flash]').toggleClass("goal")
-		console.log("goal celebration is over :(");
-	});
-
-
-});
-
-
+    	socket.on('goalover', function() {
+    		// $('#scoreboard').show();
+    		$('#goal').hide();
+    		$('div[id=flash]').toggleClass("goal")
+    		console.log("goal celebration is over :(");
+    	});
+    });
 </script>
 
 <div class="container">
@@ -64,20 +60,39 @@ $(document).ready(function() {
 
     <div id="hide" class="row">
 
-    	<div class="col-lg-6 col-sm-12 text-center">
-    		<h2>Run the App!</h2>
-    		<p class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultricies luctus enim. Fusce at ullamcorper erat. Etiam venenatis, diam at suscipit egestas, tellus ex viverra turpis, a vehicula velit mauris a erat. Ut sed ultrices odio, in commodo est. Curabitur tincidunt arcu massa, vitae consequat risus mollis ut. Nunc facilisis commodo lectus, sit amet tristique lorem semper sit amet. Donec ac ligula ligula. Nunc fringilla facilisis ex eu placerat. Ut bibendum suscipit tellus, in mollis eros semper ac. Nulla dignissim imperdiet elementum.</p>
+    	<div class="col-lg-6 col-sm-12 mb-2">
+            <div class="card">
+                <div class="col-12 mt-3">                
+                    <div class="card-header">
+            		    <h2>Run the App!</h2>
+                    </div>
+                    <div class="card-body">
+                		<ol class="text-left">
+                            <li>Set your <strong>stream delay</strong> and click RUN</li>
+                            <ul><li>Find the sweet spot so you don't spoil a goal for yourself!</li>
+                            </ul>
+                            <li>The app will refresh every 5 seconds while the game is live. <strong>For best results,</strong> do not leave this page when the app is running.</li>
+                            <li>When your team scores the horn will sound. If I do not have your team's specific goal horn, then a default horn will sound.</li>
+                            <li>Enjoy!</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
     	</div>
 
     	<div class="col-lg-6 col-sm-12">
 	    	<div class="card">
-    			<div class="col-12 col-lg-12 mt-3 mb-3">
+    			<div class="col-12 mt-3 mb-3">
 	    			<form accept-charset="utf-8">
 	    				<div class="card-header">
 	    					<label class="" for="stream_delay"><h3>Set Stream Delay:</h3></label>
 	    				</div>
-    					<input id="stream_delay" class="mt-2 form-control" type="number" name="stream_delay" value="1">
-    					<button id="run" type="submit" class="btn btn-primary btn-lg m-2">Run</button>
+                        <div class="card-body">
+                            <p>This will delay the goal celebration by <i>X</i> seconds. Typically the API runs about 30 seconds ahead of a stream. Your mileage may vary.</p>
+                            <p>Must be a positive number.</p>
+        					<input id="stream_delay" class="mt-2 form-control" type="number" name="stream_delay" value="1">
+        					<button id="run" type="submit" class="btn btn-primary btn-lg m-2">Run</button>
+                        </div>
 	    			</form>
 	    		</div>
     		</div>
