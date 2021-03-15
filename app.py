@@ -75,12 +75,13 @@ def home():
 		abbreviations=abbreviations,
 		schedule=schedule,
 		divisions=divisions,
-		standings=team_stats
+		standings=team_stats,
 		)
 
 
 @app.route("/watchgame", methods=["GET", "POST"])
 def run():
+	domain = os.environ.get('DOMAIN')
 	if request.method == "POST":
 
 		abr = request.form['team']
@@ -99,12 +100,15 @@ def run():
 		return render_template(
 			"app.html",
 			name=session['team_name'],
+			domain=domain,
 			)
 	else:
 		if 'abr' in session and 'team_name' in session:
 			return render_template(
 				"app.html",
-				name=session['team_name'])
+				name=session['team_name'],
+				domain=domain,
+				)
 
 		else:
 			flash("Please select a team before continuing to the app!",
