@@ -82,11 +82,13 @@ def home():
 @app.route("/watchgame", methods=["GET", "POST"])
 def run():
 	domain = os.environ.get('DOMAIN')
+	
 	if request.method == "POST":
 
 		abr = request.form['team']
 		session['abr'] = abr # set team abbreviation
 		horn = domain + f"/static/sounds/{abr}.mp3"
+		win = domain + f"/static/sounds/{abr}_win.mp3"
 
 		r = requests.get(base_url + "/api/v1/teams")
 		teams = r.json()
@@ -101,14 +103,20 @@ def run():
 		return render_template(
 			"app.html",
 			name=session['team_name'],
-			horn = horn,
+			horn=horn,
+			win=win,
 			domain=domain,
 			)
 	else:
 		if 'abr' in session and 'team_name' in session:
+			abr = session['abr']
+			horn = domain + f"/static/sounds/{abr}.mp3"
+			win = domain + f"/static/sounds/{abr}_win.mp3"
 			return render_template(
 				"app.html",
 				name=session['team_name'],
+				horn=horn,
+				win=win,
 				domain=domain,
 				)
 

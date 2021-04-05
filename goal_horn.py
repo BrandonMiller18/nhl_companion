@@ -2,7 +2,7 @@ import requests
 import json
 import time
 from playsound import playsound
-from flask import session, request
+from flask import session, request, url_for, redirect
 from flask_socketio import SocketIO, send, emit
 
 base_url = "https://statsapi.web.nhl.com"
@@ -55,16 +55,6 @@ def get_game_status(team_id):
 	game_status = data['dates'][0]['games'][0]['status']['abstractGameState']
 
 	return game_status
-
-
-def celebration(abr):
-	"""celebration when the your team scores."""
-	try:
-		playsound(f"static/sounds/{abr}.mp3")
-	except NameError:
-		playsound("static/sounds/goal.mp3")
-	finally:
-		pass
 
 
 def win(abr):
@@ -143,9 +133,18 @@ def watchgame(abr, stream_delay, room):
 			if away:
 				if away_score > home_score:
 					time.sleep(stream_delay)
-					win(abr) # PLAY GLORIA!
+					emit('win', room=room)
+					time.sleep(120)
+				else:
+					emit('loss', room=room)
+					time.sleep(20)
 			if home:
 				if home_score > away_score:
 					time.sleep(stream_delay)
-					win(abr)			
+					emit('win', room=room)
+					time.sleep(120)
+				else:
+					emit('loss', room=room)
+					time.sleep(20)
+			emit('over', room=room)
 			break

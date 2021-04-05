@@ -8,10 +8,12 @@
 
     $(document).ready(function() { 
 
-    	var socket = io.connect({{ DOMAIN }});
+    	var socket = io.connect('{{ domain }}');
 
     	$('#scoreboard').hide();
     	$("#goal").hide();
+        $("#win").hide();
+        $("#loss").hide();
 
     	$('#run').on('click', function() {
     		socket.send($('#stream_delay').val());
@@ -38,6 +40,7 @@
     	socket.on('goal', function() {
     		// $('#scoreboard').hide();
     		$('#goal').show();
+            $('.app__run').hide();
     		$('div[id=flash]').toggleClass("goal");
             var audio = new Audio('{{ horn }}');
             audio.play();
@@ -47,16 +50,39 @@
     	socket.on('goalover', function() {
     		// $('#scoreboard').show();
     		$('#goal').hide();
+            $('.app__run').show();
     		$('div[id=flash]').toggleClass("goal");
     		console.log("goal celebration is over :(");
     	});
+
+        socket.on('win' , function() {
+            $("#win").show();
+            $('.app__run').hide();
+            var audio = new Audio('{{ win }}');
+            audio.play();
+        });
+
+        socket.on('loss' , function() {
+            $("#loss").show();
+            $('.app__run').hide();
+        })
+
+        socket.on('over', function() {
+            window.location.replace("{{ domain }}");
+        })
     });
 </script>
 
 <div class="container">
 
     <div id="goal">
-        <img src="static/images/goal.gif" class="" alt="Goal light">
+        <img src="static/images/goal.gif" class="rounded" alt="Goal light">
+    </div>
+    <div id="win">
+        <img src="static/images/win.gif" class="rounded" alt="Confetti">
+    </div>
+    <div id="loss">
+        <img src="static/images/loss.gif" class="rounded" alt="You lose!">
     </div>
 
     <div class="jumbotron">
