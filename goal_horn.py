@@ -41,11 +41,11 @@ def get_team(abr):
 
 
 def get_data(team_id):
-	# r = requests.get(base_url + f"/api/v1/schedule?teamId={team_id}&expand=schedule.linescore")
-	# data = r.json()
+	r = requests.get(base_url + f"/api/v1/schedule?teamId={team_id}&expand=schedule.linescore")
+	data = r.json()
 
-	with open("sched.json", "r") as f:
-		data = json.load(f) # for testing
+	# with open("sched.json", "r") as f:
+	# 	data = json.load(f) # for testing
 
 	return data
 
