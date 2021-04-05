@@ -86,6 +86,7 @@ def run():
 
 		abr = request.form['team']
 		session['abr'] = abr # set team abbreviation
+		horn = domain + f"/static/sounds/{abr}.mp3"
 
 		r = requests.get(base_url + "/api/v1/teams")
 		teams = r.json()
@@ -100,6 +101,7 @@ def run():
 		return render_template(
 			"app.html",
 			name=session['team_name'],
+			horn = horn,
 			domain=domain,
 			)
 	else:

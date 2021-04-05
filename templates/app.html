@@ -38,20 +38,26 @@
     	socket.on('goal', function() {
     		// $('#scoreboard').hide();
     		$('#goal').show();
-    		$('div[id=flash]').toggleClass("goal")
+    		$('div[id=flash]').toggleClass("goal");
+            var audio = new Audio('{{ horn }}');
+            audio.play();
     		console.log("there was a goal for your team!");
     	});
 
     	socket.on('goalover', function() {
     		// $('#scoreboard').show();
     		$('#goal').hide();
-    		$('div[id=flash]').toggleClass("goal")
+    		$('div[id=flash]').toggleClass("goal");
     		console.log("goal celebration is over :(");
     	});
     });
 </script>
 
 <div class="container">
+
+    <div id="goal">
+        <img src="static/images/goal.gif" class="" alt="Goal light">
+    </div>
 
     <div class="jumbotron">
             <h1 class="text-center">Lets go {{session['team_name']}}!</h1>
@@ -102,16 +108,12 @@
 
     <div id="scoreboard" class="row">
     	<div class="col-12">
-    		<div id="flash" class="card">
-    			<div class="app__run">
-    			</div>
+    		<div id="flash" class="card app__run">
     		</div>
     	</div>
-    	<div class="col-12">
-    	    <div id="goal" class="text-center mt-2">
-    			<img src="static/images/goal.gif" class="rounded" alt="Goal light">
-    		</div>
-    	</div>
+<!--     	<div class="col-12">
+
+    	</div> -->
     	<div class="col-12 mt-2">
     		<div id="flash" class="card">
     			<div class="card-header">

@@ -41,11 +41,11 @@ def get_team(abr):
 
 
 def get_data(team_id):
-	r = requests.get(base_url + f"/api/v1/schedule?teamId={team_id}&expand=schedule.linescore")
-	data = r.json()
+	# r = requests.get(base_url + f"/api/v1/schedule?teamId={team_id}&expand=schedule.linescore")
+	# data = r.json()
 
-	# with open("sched.json", "r") as f:
-	# 	data = json.load(f) # for testing
+	with open("sched.json", "r") as f:
+		data = json.load(f) # for testing
 
 	return data
 
@@ -63,6 +63,8 @@ def celebration(abr):
 		playsound(f"static/sounds/{abr}.mp3")
 	except NameError:
 		playsound("static/sounds/goal.mp3")
+	finally:
+		pass
 
 
 def win(abr):
@@ -71,6 +73,8 @@ def win(abr):
 		playsound(f"static/sounds/{stl}_win.mp3")
 	except NameError:
 		playsound("static/sounds/win.mp3")
+	finally:
+		pass
 
 def watchgame(abr, stream_delay, room):
 	team_id = get_team(abr)
@@ -96,7 +100,6 @@ def watchgame(abr, stream_delay, room):
 		game_status = get_game_status(team_id)
 		if game_status == "Preview":
 			time.sleep(15)
-			# pass
 
 		if game_status == "Live":
 			i = 0
@@ -114,18 +117,16 @@ def watchgame(abr, stream_delay, room):
 				emit('scores', (away_score, home_score), room=room) # scores -> client
 
 				if i == 1: # skip on first iteration to set comparison scores
-					if away:
-						if away_score != away_scoreLast:
-							time.sleep(stream_delay)
-							emit('goal', room=room)
-							celebration(abr)
-							emit('goalover', room=room)
-					if home:
-						if home_score != home_scoreLast:
-							time.sleep(stream_delay)
-							emit('goal', room=room)
-							emit(celebration(abr), room=room)
-							emit('goalover', room=room)
+					if away and away_score > away_scoreLast:
+						time.sleep(stream_delay)
+						emit('goal', room=room)
+						time.sleep(30)
+						emit('goalover', room=room)
+					if home and home_score > home_scoreLast:
+						time.sleep(stream_delay)
+						emit('goal', room=room)
+						time.sleep(30)
+						emit('goalover', room=room)
 				else:
 					i += 1 # set i equal to 1 on first iteration
 
