@@ -25,7 +25,13 @@
     		$("#gamestatus").html(game_status);
     		$('#scoreboard').show();
     		$("#hide").hide();
+            console.log("Recieved game update.")
     	});
+
+        socket.on('noGame', function() {
+            $("#hide").hide();
+            $(".game__only").hide();
+        });
 
     	socket.on('teams', function(away_team, home_team) {
     		$("#awayteam").html(away_team);
@@ -44,7 +50,7 @@
     		$('div[id=flash]').toggleClass("goal");
             var audio = new Audio('{{ horn }}');
             audio.play();
-    		console.log("there was a goal for your team!");
+    		console.log("Goal!");
     	});
 
     	socket.on('goalover', function() {
@@ -52,7 +58,6 @@
     		$('#goal').hide();
             $('.app__run').show();
     		$('div[id=flash]').toggleClass("goal");
-    		console.log("goal celebration is over :(");
     	});
 
         socket.on('win' , function() {
@@ -60,17 +65,21 @@
             $('.app__run').hide();
             var audio = new Audio('{{ win }}');
             audio.play();
+            console.log("Game over! Winner!");
         });
 
         socket.on('loss' , function() {
             $("#loss").show();
             $('.app__run').hide();
+            console.log("Team lost.")
         })
 
-        socket.on('over', function() {
+        socket.on('end', function() {
             window.location.replace("{{ domain }}");
+            console.log("Redirecting back to home page.")
         })
     });
+
 </script>
 
 <div class="container">
@@ -122,7 +131,7 @@
                         <div class="card-body">
                             <p>This will delay the goal celebration by <i>X</i> seconds. Typically the API runs about 30 seconds ahead of a stream. Your mileage may vary.</p>
                             <p>Must be a positive number.</p>
-        					<input id="stream_delay" class="mt-2 form-control" type="number" name="stream_delay" value="1">
+        					<input id="stream_delay" class="mt-2 form-control" type="number" name="stream_delay" value="30">
         					<button id="run" type="submit" class="btn btn-primary btn-lg m-2">Run</button>
                         </div>
 	    			</form>
@@ -133,7 +142,7 @@
     </div>
 
     <div id="scoreboard" class="row">
-    	<div class="col-12">
+    	<div class="col-12 game__only">
     		<div id="flash" class="card app__run">
     		</div>
     	</div>
@@ -150,21 +159,21 @@
     					<thead>
     						<tr>
     							<th>Game Status</th>
-    							<th>Home</th>
-    							<th>Away</th>
+    							<th class="game__only">Home</th>
+    							<th class="game__only">Away</th>
     						</tr>
     					</thead>
     					<tbody>
     						<tr>
     							<td id="gamestatus"></td>
-    							<td id="hometeam"></td>
-    							<td id="awayteam"></td>
+    							<td id="hometeam" class="game__only"></td>
+    							<td id="awayteam" class="game__only"></td>
     						</tr>
     					</tbody>
     				</table>
     			</div>
     		</div>
-    		<div id="flash"class="card mt-2">
+    		<div id="flash" class="card mt-2 game__only">
     		 	<div class="card-header">
     		 		<h3>Scoreboard</h3>
     		 	</div>

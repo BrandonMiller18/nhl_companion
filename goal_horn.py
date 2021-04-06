@@ -1,8 +1,7 @@
 import requests
 import json
 import time
-from playsound import playsound
-from flask import session, request, url_for, redirect
+from flask import session, request
 from flask_socketio import SocketIO, send, emit
 
 base_url = "https://statsapi.web.nhl.com"
@@ -15,7 +14,10 @@ def get_game(team_id, room):
 		game = True
 	except IndexError:
 		emit('status', f"The {session['team_name']} do not play today.", room=room)
+		emit('noGame', room=room)
 		game = False
+		time.sleep(5)
+		emit('end', room=room)
 
 	return game
 
@@ -26,7 +28,7 @@ def get_teams(data, room):
 		home_team = data['dates'][0]['games'][0]['teams']['home']['team']['name']
 		emit('teams', (away_team, home_team), room=room)
 	except IndexError:
-		emit('teams', ('N/A', 'N/A'), room=room)
+		pass
 
 
 def get_team(abr):
@@ -57,15 +59,6 @@ def get_game_status(team_id):
 	return game_status
 
 
-def win(abr):
-	"""celebration to play when your team wins"""
-	try:
-		playsound(f"static/sounds/{stl}_win.mp3")
-	except NameError:
-		playsound("static/sounds/win.mp3")
-	finally:
-		pass
-
 def watchgame(abr, stream_delay, room):
 	team_id = get_team(abr)
 
@@ -90,9 +83,10 @@ def watchgame(abr, stream_delay, room):
 		game_status = get_game_status(team_id)
 		if game_status == "Preview":
 			time.sleep(15)
-
+		
+		i = 0
 		if game_status == "Live":
-			i = 0
+			
 			while game_status == "Live":
 				"""Continous loop to check game score, play cellys"""
 				emit('status', (game_status), room=room) # update game status on client
@@ -130,6 +124,13 @@ def watchgame(abr, stream_delay, room):
 		if game_status == "Final":
 			emit('status', game_status, room=room)
 			
+			if i == 0:
+				away_score = data['dates'][0]['games'][0]['teams']['away']['score']
+				home_score = data['dates'][0]['games'][0]['teams']['home']['score']
+
+				emit('scores', (away_score, home_score), room=room) # scores -> client
+				time.sleep(3)
+
 			if away:
 				if away_score > home_score:
 					time.sleep(stream_delay)
@@ -137,7 +138,7 @@ def watchgame(abr, stream_delay, room):
 					time.sleep(120)
 				else:
 					emit('loss', room=room)
-					time.sleep(20)
+					time.sleep(15)
 			if home:
 				if home_score > away_score:
 					time.sleep(stream_delay)
@@ -145,6 +146,6 @@ def watchgame(abr, stream_delay, room):
 					time.sleep(120)
 				else:
 					emit('loss', room=room)
-					time.sleep(20)
-			emit('over', room=room)
+					time.sleep(15)
+			emit('end', room=room)
 			break

@@ -53,14 +53,22 @@ def home():
 
 		for team in teams:
 			team_name = team["team"]["name"]
+			team_id = team["team"]["id"]
+			team_link = base_url + team["team"]["link"]
 			team_wins = team["leagueRecord"]["wins"]
 			team_losses = team["leagueRecord"]["losses"]
 			team_ot = team["leagueRecord"]["ot"]
 			team_points = team["points"]
 			games_played = team["gamesPlayed"]
+		
+			# r = requests.get(team_link)
+			# team_data = r.json()
+			# website = team_data["teams"][0]["officialSiteUrl"]
 
 			team = {
 			"name" : team_name,
+			"id" : team_id,
+			# "link" : website,
 			"wins" : team_wins,
 			"losses" : team_losses,
 			"ot" : team_ot,
@@ -87,8 +95,8 @@ def run():
 
 		abr = request.form['team']
 		session['abr'] = abr # set team abbreviation
-		horn = domain + f"/static/sounds/{abr}.mp3"
-		win = domain + f"/static/sounds/{abr}_win.mp3"
+		horn = domain + f"static/sounds/{abr.lower()}.mp3"
+		win = domain + f"static/sounds/{abr.lower()}_win.mp3"
 
 		r = requests.get(base_url + "/api/v1/teams")
 		teams = r.json()
@@ -110,8 +118,8 @@ def run():
 	else:
 		if 'abr' in session and 'team_name' in session:
 			abr = session['abr']
-			horn = domain + f"/static/sounds/{abr}.mp3"
-			win = domain + f"/static/sounds/{abr}_win.mp3"
+			horn = domain + f"static/sounds/{abr.lower()}.mp3"
+			win = domain + f"static/sounds/{abr.lower()}_win.mp3"
 			return render_template(
 				"app.html",
 				name=session['team_name'],
