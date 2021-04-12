@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}NHL Companion | About{% endblock %}
+{% block description %}{% endblock %}
+{% set active_page = "about" %}
+{% block content %}
+
+<div class="container">
+    
+    <div class="jumbotron ">
+            <h1 class="text-center">About the NHL Companion</h1>
+            <p class="pt-1"></p>
+    </div>
+
+    <div class="row">
+    	<div class="col-12">
+		    <div class="card m-2 mt-3">
+				<div class="card-body">
+				    <div class="card-header">
+				        <h2 class="card-title">How it works</h2>
+				    </div>
+				    <div class="card-text">
+				    	<p>The NHL Companion is built using Python. The site is built using the Python Flask webframework and Socket-IO to facilitate server to client communication. The data is retrieved from the NHL's public API. When a user selects a team, a session variable denoting the user's favorite team is set in the session. You'll notice this when you navigate back to the homepage after selecting a team, your team's game/standings will be highlighted and bold. This session variable is also used to display the team name in the header of the app page.</p>
+				    	<p>Once a user selects a team, they then select a "stream delay." This is tricky to get right, but once you figure it out for your specific use case, it generally stays the same. This is to facilitate the inconsistancy between someone who streams games using an app/website vs. someone who watches on cable. The stream delay is then sent to the server, which triggers the app to start running. If there is no game for that team, that is displayed to the user and they are redirected to the home page after a brief delay.</p>
+				    	<p>If there is a game, the app then checks for the game status. There are three game statuses: preview, live, final. If the game is in "preview" status, the app checks every 15 seconds for a new game status. If the status is "live" the app checks every 5 seconds and compares the new score vs. the last score. If the user's team has scored, the server will send a message to the client to trigger the goal celebration.</p>
+				    	<p>Upon game end, if your team wins and there is a victory song for a specific team (and I have it), it will be played. Then, after a brief celebration (or sadness) period the user is redirected to the home page.</p>
+				    </div>
+				</div>
+			</div>
+			<div class="card m-2 mt-3">
+				<div class="card-body">
+				    <div class="card-header">
+				        <h2 class="card-title">Future Plans</h2>
+				    </div>
+				    <div class="card-text">
+				    	<p>I have some thoughts around where to go with this project next, but would also love to hear ideas from the crowd!</p>
+				    	<p>Definite future enhancements will include:</p>
+				    	<ul>
+				    		<li>Wake Lock to keep the app alive without user intervention.</li>
+				    		<li>Game stats (shots, players, ice time, etc...)</li>
+				    		<li>Team stats and comparisons</li>
+				    		<li>League leaders</li>
+				    		<li>More...?</li>
+				    	</ul>
+				    </div>
+				</div>
+			</div>
+    	</div>
+    </div>
+</div>
+
+{% endblock %}
+
+

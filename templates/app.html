@@ -18,6 +18,7 @@
     	$('#run').on('click', function() {
     		socket.send($('#stream_delay').val());
     		$("#hide").hide();
+            $("footer").hide();
     		return false; 
     	});
 

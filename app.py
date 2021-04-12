@@ -133,5 +133,11 @@ def run():
 				"text-center alert alert-info mt-2 mr-2")
 			return redirect(url_for("home"))
 
+
+@app.route("/about")
+def about():
+	return render_template("about.html")
+
+
 if __name__ == '__main__':
 	socketio.run(app)
