@@ -29,8 +29,13 @@ def handle_message(msg):
 @app.route("/", methods=["POST", "GET"])
 def home():
 	r = requests.get(base_url + "/api/v1/teams")
-	abbreviations = r.json()
-	abbreviations = abbreviations["teams"]
+	teams = r.json()
+	teams = teams["teams"]
+	abbreviations = []
+	i = 0
+	for team in teams:
+		abbreviations.append(teams[i]['abbreviation'])
+		i += 1
 
 	r = requests.get(base_url + "/api/v1/schedule")
 	schedule = r.json()
@@ -80,7 +85,7 @@ def home():
 			team_stats.append(team)
 
 	return render_template("index.html",
-		abbreviations=abbreviations,
+		abbreviations=sorted(abbreviations),
 		schedule=schedule,
 		divisions=divisions,
 		standings=team_stats,
