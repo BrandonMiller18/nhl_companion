@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha384-JUh3U/xjnOlL/7MKh/FzORuvdTxBZuZJUFfG3A51H4GkBkXlS38nZh1jqXd2ElYN" crossorigin="anonymous"></script>
-
+    {% block scripts %}{% endblock %}
 
 </head>
 
@@ -29,7 +29,7 @@
 
 
 
-<body class="pb-4">
+<body>
 
 
 	{% with messages = get_flashed_messages(with_categories=true) %}
@@ -47,11 +47,11 @@
 <footer class="mt-3 bg-dark text-white">
 	<div id="hide" class="container p-4">
 		<div class="row">
-			<div class="col-md-12 col-lg-6 pl-3 pr-3 border-right">
+			<div class="col-md-12 col-lg-6 p-3 pr-3 border-right">
 				<h5 class="text-uppercase ml-2">Disclaimer</h5>
 				<p class="ml-4">This site is a personal project and is in no way affiliated with the National Hockey League. I do not own the rights to any sounds, names, or logos used on this site. The intention of the site is to learn while providing a fun experience to those who happen to find it.</p>
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-3 pl-3 pr-3 border-right">
+			<div class="col-sm-12 col-md-6 col-lg-3 p-3 pr-3 border-right">
 				<h5 class="text-uppercase ml-2">Links</h5>
 				<ul class="list-unstyled ml-4">
 					<li><a href="/about" title="About">About</a></li>
@@ -60,7 +60,7 @@
 				</ul>
 				
 			</div>
-			<div class="col-sm-12 col-md-6 col-lg-3 pl-3 pr-3 border-right text-center">
+			<div class="col-sm-12 col-md-6 col-lg-3 p-3 pr-3 border-right text-center">
 				<h5 class="text-uppercase">See the code!</h5>
 				<a href="https://github.com/BrandonMiller18/nhl_companion" class="display-1" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a>
 			</div>

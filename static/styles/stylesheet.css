@@ -45,6 +45,10 @@
 	margin: 25vh auto auto auto;
 }
 
+.custom-control-label::before, .custom-control-label::after {
+	cursor: pointer;
+}
+
 @keyframes goalBorder {
 	0% {
 
@@ -62,4 +66,12 @@ a {
 a:hover {
 	color: grey;
 	text-decoration: none;
+}
+
+@media only screen and (max-width: 765px) {
+	.border-right {
+		border-right: none !important;
+		border-bottom: 1px solid #dee2e6;
+		margin: 0 5%;
+	}
 }

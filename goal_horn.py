@@ -135,17 +135,17 @@ def watchgame(abr, stream_delay, room):
 				if away_score > home_score:
 					time.sleep(stream_delay)
 					emit('win', room=room)
-					time.sleep(120)
+					time.sleep(60)
 				else:
 					emit('loss', room=room)
-					time.sleep(15)
+					time.sleep(10)
 			if home:
 				if home_score > away_score:
 					time.sleep(stream_delay)
 					emit('win', room=room)
-					time.sleep(120)
+					time.sleep(60)
 				else:
 					emit('loss', room=room)
-					time.sleep(15)
+					time.sleep(10)
 			emit('end', room=room)
 			break

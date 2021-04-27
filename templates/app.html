@@ -1,72 +1,93 @@
 {% extends "base.html" %}
 {% block title %}NHL Companion | Goal Horn{% endblock %}
-{% block description %}{% endblock %}
-{% set active_page = "app" %}
-{% block content %}
-
+{% block scripts %}
 <script type="text/javascript">
 
     $(document).ready(function() { 
 
-    	var socket = io.connect('{{ domain }}');
+        var socket = io.connect('{{ domain }}');
 
-    	$('#scoreboard').hide();
-    	$("#goal").hide();
+        $('#scoreboard').hide();
+        $("#goal").hide();
         $("#win").hide();
         $("#loss").hide();
 
-    	$('#run').on('click', function() {
-    		socket.send($('#stream_delay').val());
-    		$("#hide").hide();
+        $('#run').on('click', function() {
+            socket.send($('#stream_delay').val());
+            $("#hide").hide();
             $("footer").hide();
-    		return false; 
-    	});
+            return false; 
+        });
 
-    	socket.on('status', function(game_status) {
-    		$("#gamestatus").html(game_status);
-    		$('#scoreboard').show();
-    		$("#hide").hide();
+        socket.on('status', function(game_status) {
+            $("#gamestatus").html(game_status);
+            $('#scoreboard').show();
+            $("#hide").hide();
             console.log("Recieved game update.")
-    	});
+        });
 
         socket.on('noGame', function() {
             $("#hide").hide();
             $(".game__only").hide();
         });
 
-    	socket.on('teams', function(away_team, home_team) {
-    		$("#awayteam").html(away_team);
-    		$("#hometeam").html(home_team);
-    	});
+        socket.on('teams', function(away_team, home_team) {
+            $("#awayteam").html(away_team);
+            $("#hometeam").html(home_team);
+        });
 
-    	socket.on('scores', function(away_score, home_score) {
-    		$("#awayscore").html(away_score);
-    		$("#homescore").html(home_score);
-    	});
+        socket.on('scores', function(away_score, home_score) {
+            $("#awayscore").html(away_score);
+            $("#homescore").html(home_score);
+        });
 
-    	socket.on('goal', function() {
-    		// $('#scoreboard').hide();
-    		$('#goal').show();
+        socket.on('goal', function() {
+            // $('#scoreboard').hide();
+            $('#goal').show();
             $('.app__run').hide();
-    		$('div[id=flash]').toggleClass("goal");
+            $('div[id=flash]').toggleClass("goal");
+            $('#musicCredit').html("Horn audio from www.nhl.com")
             var audio = new Audio('{{ horn }}');
             audio.play();
-    		console.log("Goal!");
-    	});
+            console.log("Goal!");
+        });
 
-    	socket.on('goalover', function() {
-    		// $('#scoreboard').show();
-    		$('#goal').hide();
+        socket.on('goalover', function() {
+            // $('#scoreboard').show();
+            $('#goal').hide();
             $('.app__run').show();
-    		$('div[id=flash]').toggleClass("goal");
-    	});
+            $('div[id=flash]').toggleClass("goal");
+        });
 
         socket.on('win' , function() {
             $("#win").show();
             $('.app__run').hide();
-            var audio = new Audio('{{ win }}');
-            audio.play();
-            console.log("Game over! Winner!");
+            
+
+            $.get("{{ win }}")
+                .done(function() {
+                    var audio = new Audio('{{ win }}')
+                    audio.play();
+                    $('#musicCredit').html("I do not own or profit from the playing of this song. Credit: Laura Branigan & Atlas Publishing");
+                }).fail(function() {
+                    audio = new Audio('{{ genericWin }}')
+                    audio.play();
+                    $('#musicCredit').html("Music: www.bensound.com");
+                })
+
+            // var audio = new Audio('{{ win }}')
+            // var file = new File('{{ win }}')
+            
+            // if (file.exists()) {
+            //     audio.play();
+            //     $('#musicCredit').html("I do not own or profit from the playing of this song. Credit: Laura Branigan & Atlas Publishing")
+            // } else {
+            //     audio = new Audio('{{ genericWin }}')
+            //     console.log(audio);
+            //     audio.play();
+            //     $('#musicCredit').html("Music: www.bensound.com")
+            // }
+            // console.log("Game over! Winner!");
         });
 
         socket.on('loss' , function() {
@@ -82,6 +103,13 @@
     });
 </script>
 
+<script src="{{ url_for('static', filename='js/wakeLock.js') }}" defer></script>
+
+{% endblock %}
+{% block description %}{% endblock %}
+{% set active_page = "app" %}
+{% block content %}
+
 
 <div class="container">
 
@@ -90,6 +118,9 @@
     </div>
     <div id="win">
         <img src="static/images/win.gif" class="rounded" alt="Confetti">
+        <div class="text-center">
+            <p class="small text-white" id="musicCredit"></p>
+        </div>
     </div>
     <div id="loss">
         <img src="static/images/loss.gif" class="rounded" alt="You lose!">
@@ -115,11 +146,8 @@
                                 <li>Find the sweet spot so you don't spoil a goal for yourself!</li>
                             </ul>
                             <li>The app will refresh every 5 seconds while the game is live and every 15 seconds during the preview state.</li>
-                            <li><strong>For best results,</strong> keep this page alive while the app is running.</li>
-                            <ul>
-                                <li>If your device falls asleep, simply refresh the page and restart the app. In a future release I hope to implement Wake Lock to avoid this issue.</li>
-                            </ul>
-                            <li>When your team scores the horn will sound. If I do not have your team's specific goal horn, then a default horn will sound.</li>
+                            <li><strong>For best results,</strong> enable the "Keep alive" toggle below to ensure your device stays awake.</li>
+                            <li>When your team scores the horn will sound.</li>
                             <li>Stay tuned at game's end for a surprise!</li>
                         </ol>
                     </div>
@@ -132,7 +160,7 @@
     			<div class="col-12 mt-3 mb-3">
 	    			<form accept-charset="utf-8">
 	    				<div class="card-header">
-	    					<label class="" for="stream_delay"><h3>Set Stream Delay:</h3></label>
+	    					<label for="stream_delay"><h3>Set Stream Delay:</h3></label>
 	    				</div>
                         <div class="card-body">
                             <p>This will delay the goal celebration by <i>X</i> seconds. Typically the API runs about 30 seconds ahead of a stream. Your mileage may vary.</p>
@@ -201,6 +229,19 @@
     			</div>
     		</div>
     	</div>
+    </div>
+    <div class="row text-center">
+        <div class="col-12">
+            <div class="custom-control custom-switch mt-2">
+                <input type="checkbox" class="custom-control-input" data-status="off" id="wakeLock">
+                <label class="custom-control-label" for="wakeLock">Keep alive</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            <p class="small" id="wakeLockStatus"></p>
+        </div>
     </div>
 
 

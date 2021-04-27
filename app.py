@@ -102,6 +102,7 @@ def run():
 		session['abr'] = abr # set team abbreviation
 		horn = domain + f"static/sounds/{abr.lower()}.mp3"
 		win = domain + f"static/sounds/{abr.lower()}_win.mp3"
+		generic_win = domain + "static/sounds/win.mp3"
 
 		r = requests.get(base_url + "/api/v1/teams")
 		teams = r.json()
@@ -118,6 +119,7 @@ def run():
 			name=session['team_name'],
 			horn=horn,
 			win=win,
+			genericWin = generic_win,
 			domain=domain,
 			)
 	else:
@@ -125,11 +127,13 @@ def run():
 			abr = session['abr']
 			horn = domain + f"static/sounds/{abr.lower()}.mp3"
 			win = domain + f"static/sounds/{abr.lower()}_win.mp3"
+			generic_win = domain + "static/sounds/win.mp3"
 			return render_template(
 				"app.html",
 				name=session['team_name'],
 				horn=horn,
 				win=win,
+				genericWin = generic_win,
 				domain=domain,
 				)
 
