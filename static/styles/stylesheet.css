@@ -1,29 +1,278 @@
-.app__run {
+html {
+	scroll-behavior: smooth;
+	scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+	display: none
+}
+
+body {
+	color: snow;
+	margin: 0;
+	overflow-x: hidden;
+}
+
+footer {
+	background-color: #00000095;
+}
+
+p, a, ol, ul, form, table, textarea, input, label, select {
+	font-family: 'Roboto', sans-serif;
+	font-size: 1.2em;
+	margin: 0;
+}
+
+h1 {
+	font-size: 3.5rem;
+	font-weight: bold;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Open Sans', sans-serif;
+	margin: 0;
+}
+
+a {
+	color: snow;
+	text-decoration: none;
+	transition: all 0.2s ease 0s;
+}
+
+a:hover {
+	color: grey;
+	text-decoration: none;
+	transition: all 0.2s ease 0s
+}
+
+ul {
+	list-style-type: none;
+}
+
+input, select {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border-radius: 8px;
+	border-width: 1px;
+	border-style: solid;
+	transition: all .5s ease 0s;
+}
+
+input[type=submit] {
+	background-color: #58b82585;
+	color: snow;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+input[type=submit]:hover {
+	background-color: #58b825;
+	cursor: pointer;
+}
+
+input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus {
+	background-color: #e8f0fe;
+}
+
+input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover {
+	background-color: #e8f0fe;
+	transition: all .3s ease 0s;
+	border-width: 1px;
+    border-style: inset;
+    border-color: black;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th {
+	border-bottom: 1px solid white;
+	padding: 8px;
+}
+
+thead > tr:hover {
+	background-color: transparent !important;
+}
+
+tr:hover {
+	background-color: #ffffff15;
+}
+
+td {
+	padding: 8px;
+}
+
+img {
+	border-radius: 8px;
+}
+
+nav {
+	position: fixed;
+	margin: 15px 0 0 30px;
+	font-size: 1.1rem;
+}
+
+nav > a:hover {
+	color: white;
+}
+
+.container {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	padding: 0 10%;
+}
+
+.full__width {
+	grid-column: span 12;
+}
+.half__width {
+	grid-column: span 6;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.left {
+	text-align: left;
+}
+
+.footer__items {
+	grid-column: span 4;
+	margin: 15px 5px;
+	border-right: 1px solid whitesmoke;
+	padding: 8px;
+}
+
+.footer__items > h4 {
+	padding-bottom: 8px;
+	font-size: 1.2rem;
+}
+
+/*.footer__copy {
+	font-size: 0.85rem;
+}*/
+
+.footer__copy.git {
+	text-align: center;
+	font-size: 4rem;
+}
+
+.close {
+	/* X button to hide the footer */ 
+	position: absolute;
+	padding-top: 5px; 
+	left: 95%;
+	font-weight: 100;
+}
+
+.scroller {
+	height: 100vh;
+	overflow-y: scroll;
+	scrollbar-width: none; /* Firefox */
+	scroll-snap-type: y mandatory;
+}
+
+.standings {
+	max-height: 75vh;
+	overflow-y: scroll;
+	scrollbar-width: none; /* Firefox */
+}
+
+.section {
+	height: 100vh;
+	scrollbar-width: none; /* Firefox */
+	scroll-snap-align: start;
+	overflow-y: scroll;
+}
+
+.scroller::-webkit-scrollbar {display: none;}
+.standings::-webkit-scrollbar {display: none;}
+.section::-webkit-scrollbar {display: none;}
+
+.home__table {
+	margin: 10px auto;
+	padding: 5px;
+	max-height: 75vh;
+/*	overflow-y: scroll;*/
+}
+
+.team__select, .submit__btn {width: 25%}
+
+
+.app__run { /* LOADING BAR WHEN APP IS ON */
 	height: 10px;
 	width: 100%;
 	animation: run 5s linear infinite;
-}
-
-@keyframes run {
-	0% {
-		width: 0%;
-	}
-
-	100% {
-		width: 100%;
-		background-color: #007bff;
-	}
-}
-
-.card {
-	box-shadow: 0px 0px 0.45em #343a4080;
 }
 
 .card.app__run {
 	box-shadow: none;
 }
 
-.card.goal {
+.bg__home { /* HOME PAGE BACKGROUND */
+	position: fixed;
+	background-image: url("../images/ice_background.png");
+	height: 100vh;
+	width: 100vw;
+	top: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	z-index: -10;
+}
+
+.hero {
+	padding: 0 10%;
+}
+
+.top > .title {
+	/*top: 0;*/
+	padding: 2rem 0;
+}
+
+.title {
+	position: relative;
+	top: 25vh;
+	animation: fadeIn linear 1s;
+	/*background-color: #ffffff55;*/
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.title__text {
+	animation: fadeIn linear 2s;
+	padding: 5px 0;
+	width: 50%;
+}
+
+
+
+.home__form {
+	margin: 0 auto;
+	position: relative;
+	top: 25vh;
+	padding: 0 10%;
+}
+
+
+
+.my__team {
+	background-color: #ffffff15;
+	font-weight: bold;
+}
+
+
+/* APP CSS */
+
+.goal {
 	animation: goalBorder 1s linear infinite !important;
 	animation-direction: alternate;
 }
@@ -45,33 +294,117 @@
 	margin: 25vh auto auto auto;
 }
 
-.custom-control-label::before, .custom-control-label::after {
-	cursor: pointer;
+.wakelock {
+	position: absolute;
+	bottom: 0;
+	width: 100vw;
+	padding: 0;
+	background-color: #00000095 
 }
 
-@keyframes goalBorder {
-	0% {
-
-	}
-
-	100% {
-		border-color: red;
-	}
+.keep__alive {
+	grid-column: span 12;
+	text-align: center
 }
 
-a {
-	color: white;
+input[type=checkbox] {
+	position: relative;
+	width: auto;
+	margin: 8px;
 }
 
-a:hover {
-	color: grey;
-	text-decoration: none;
+
+.scoreboard {
+	margin-top: 10vh;
+}
+
+.scoreboard__section {
+	margin: 8vh 0;
+}
+
+.app__table {
+	margin: 0 auto;
+	width: 50%;
+	text-align: left;
+}
+
+.toggle {visibility: hidden;}
+.recieve__update {
+	position: absolute;
+	top: 0;
+	left: 95vw;
+	height: 8px;
+	width: 8px;
+	border-radius: 8px;
+	background-color: red;
+}
+
+@media only screen and (max-width: 1600px) {
+	.top > .title {top: 0;}
 }
 
 @media only screen and (max-width: 765px) {
-	.border-right {
+	.top__sm > .title {top: 10vh;}
+	.team__select, .submit__btn {width: 55%}
+	.recieve__update {left: 75vw;}
+
+	.border-right { /* BORDER FOR MOBILE FOOTER */
 		border-right: none !important;
 		border-bottom: 1px solid #dee2e6;
 		margin: 0 5%;
 	}
+
+	.title__text {
+		width: 100%;
+	}
+
+	.footer__copy {
+		padding: 8px 0;
+	}
+
+	.footer__items {
+		grid-column: span 12;
+		border-right: none;
+		border-bottom: 1px solid whitesmoke;
+	}
+
+	.app__table {
+		width: 85%;
+	}
+
 }
+
+@media only screen and (max-width: 450px) {
+	p {font-size: initial;}
+	h1 {font-size: 2.2rem;}
+}
+
+@keyframes run { /*  LOADING BAR ANIMATION */
+	0% {
+		width: 0%;
+	}
+
+	100% {
+		width: 100%;
+		background-color: #007bff;
+	}
+}
+
+@keyframes fadeIn {
+  0% {opacity:0}
+  100% {opacity:1}
+}
+
+
+@keyframes fadeInDissapear {
+	0% {visibility: visible;}
+	75% {visibility: visible;}
+	100% {visibility: hidden;}
+}
+
+@keyframes goalBorder { /*  GOAL ANIMATION FOR CARD BORDERS */
+	0% {}
+	100% {border-color: red;}
+}
+
+@keyframes blinker {50% {opacity: 0;}} /* not used, was for blinking chevron */

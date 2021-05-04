@@ -23,6 +23,7 @@
             $("#gamestatus").html(game_status);
             $('#scoreboard').show();
             $("#hide").hide();
+            $("#update").toggleClass("toggle");
             console.log("Recieved game update.")
         });
 
@@ -44,6 +45,7 @@
         socket.on('goal', function() {
             // $('#scoreboard').hide();
             $('#goal').show();
+            $('nav').hide();
             $('.app__run').hide();
             $('div[id=flash]').toggleClass("goal");
             $('#musicCredit').html("Horn audio from www.nhl.com")
@@ -55,6 +57,7 @@
         socket.on('goalover', function() {
             // $('#scoreboard').show();
             $('#goal').hide();
+            $('nav').show();
             $('.app__run').show();
             $('div[id=flash]').toggleClass("goal");
         });
@@ -62,6 +65,7 @@
         socket.on('win' , function() {
             $("#win").show();
             $('.app__run').hide();
+            $('nav').hide();
             
 
             $.get("{{ win }}")
@@ -74,25 +78,12 @@
                     audio.play();
                     $('#musicCredit').html("Music: www.bensound.com");
                 })
-
-            // var audio = new Audio('{{ win }}')
-            // var file = new File('{{ win }}')
-            
-            // if (file.exists()) {
-            //     audio.play();
-            //     $('#musicCredit').html("I do not own or profit from the playing of this song. Credit: Laura Branigan & Atlas Publishing")
-            // } else {
-            //     audio = new Audio('{{ genericWin }}')
-            //     console.log(audio);
-            //     audio.play();
-            //     $('#musicCredit').html("Music: www.bensound.com")
-            // }
-            // console.log("Game over! Winner!");
         });
 
         socket.on('loss' , function() {
             $("#loss").show();
             $('.app__run').hide();
+            $('nav').hide();
             console.log("Team lost.")
         })
 
@@ -102,7 +93,14 @@
         })
     });
 </script>
+<script type="text/javascript">
+    $(document).ready(function() { 
+        $('#removeFooter').click(function() {
+            $('footer').hide();
+        });
+    });
 
+</script>
 <script src="{{ url_for('static', filename='js/wakeLock.js') }}" defer></script>
 
 {% endblock %}
@@ -110,144 +108,118 @@
 {% set active_page = "app" %}
 {% block content %}
 
-
-<div class="container">
-
-    <div id="goal">
-        <img src="static/images/goal.gif" class="rounded" alt="Goal light">
-    </div>
-    <div id="win">
-        <img src="static/images/win.gif" class="rounded" alt="Confetti">
-        <div class="text-center">
-            <p class="small text-white" id="musicCredit"></p>
-        </div>
-    </div>
-    <div id="loss">
-        <img src="static/images/loss.gif" class="rounded" alt="You lose!">
-    </div>
-
-    <div class="jumbotron">
-            <h1 class="text-center">Lets go {{session['team_name']}}!</h1>
-            <p class="pt-1"></p>
-    </div>
-
-    <div id="hide" class="row">
-
-    	<div class="col-lg-6 col-sm-12 mb-2">
-            <div class="card">
-                <div class="col-12 mt-3">                
-                    <div class="card-header">
-            		    <h2>Before you start...</h2>
-                    </div>
-                    <div class="card-body">
-                		<ol class="text-left">
-                            <li>Set your <strong>stream delay</strong> and click RUN</li>
-                            <ul>
-                                <li>Find the sweet spot so you don't spoil a goal for yourself!</li>
-                            </ul>
-                            <li>The app will refresh every 5 seconds while the game is live and every 15 seconds during the preview state.</li>
-                            <li><strong>For best results,</strong> enable the "Keep alive" toggle below to ensure your device stays awake.</li>
-                            <li>When your team scores the horn will sound.</li>
-                            <li>Stay tuned at game's end for a surprise!</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-    	</div>
-
-    	<div class="col-lg-6 col-sm-12">
-	    	<div class="card">
-    			<div class="col-12 mt-3 mb-3">
-	    			<form accept-charset="utf-8">
-	    				<div class="card-header">
-	    					<label for="stream_delay"><h3>Set Stream Delay:</h3></label>
-	    				</div>
-                        <div class="card-body">
-                            <p>This will delay the goal celebration by <i>X</i> seconds. Typically the API runs about 30 seconds ahead of a stream. Your mileage may vary.</p>
-                            <p>Must be a positive number.</p>
-        					<input id="stream_delay" class="mt-2 form-control" type="number" name="stream_delay" value="30">
-        					<button id="run" type="submit" class="btn btn-primary btn-lg m-2">Run</button>
-                        </div>
-	    			</form>
-	    		</div>
-    		</div>
-    	</div>
-
-    </div>
-
-    <div id="scoreboard" class="row">
-    	<div class="col-12 game__only">
-    		<div id="flash" class="card app__run">
-    		</div>
-    	</div>
-<!--     	<div class="col-12">
-
-    	</div> -->
-    	<div class="col-12 mt-2">
-    		<div id="flash" class="card">
-    			<div class="card-header">
-    				<h3>Game info</h3>
-    			</div>
-    			<div class="card-body">
-    				<table class="table">
-    					<thead>
-    						<tr>
-    							<th>Game Status</th>
-    							<th class="game__only">Home</th>
-    							<th class="game__only">Away</th>
-    						</tr>
-    					</thead>
-    					<tbody>
-    						<tr>
-    							<td id="gamestatus"></td>
-    							<td id="hometeam" class="game__only"></td>
-    							<td id="awayteam" class="game__only"></td>
-    						</tr>
-    					</tbody>
-    				</table>
-    			</div>
-    		</div>
-    		<div id="flash" class="card mt-2 game__only">
-    		 	<div class="card-header">
-    		 		<h3>Scoreboard</h3>
-    		 	</div>
-    			<div class="card-body">
-    				<table class="table">
-    					<thead class="text-center">
-    						<tr>
-    							<th>Home</th>
-    							<th>Away</th>
-    						</tr>
-    					</thead>
-    					<tbody class="text-center">
-    						<tr>
-								<td id="homescore"></td>
-								<td id="awayscore"></td>
-    						</tr>
-    					</tbody>
-    				</table>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    <div class="row text-center">
-        <div class="col-12">
-            <div class="custom-control custom-switch mt-2">
-                <input type="checkbox" class="custom-control-input" data-status="off" id="wakeLock">
-                <label class="custom-control-label" for="wakeLock">Keep alive</label>
+<div class="bg__home"></div>
+<div class="scroller" id="hide">
+    <div class="section">
+        <div class="hero">
+            <div class="title">
+                <h1>Lets go {{session['team_name']}}!</h1>
+                <p class="title__text">Scroll down to begin.</p>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 text-center">
-            <p class="small" id="wakeLockStatus"></p>
+    <div class="section">
+        <div class="hero">
+            <div class="title">
+                <h1>Set your stream delay.</h1>
+            </div>
         </div>
-    </div>
+   
+
+        <form class="home__form" accept-charset="utf-8">
+            <p class="title__text">This will delay the goal celebration by <i>X</i> seconds. Typically the API runs about 30 seconds ahead of a stream. Your mileage may vary.</p>
+            <p><small>Must be a positive number.</small></p>
+            <div class="team__select">
+                <input id="stream_delay" class="" type="number" name="stream_delay" value="30">       
+            </div>
+            <div class="submit__btn">
+                <input id="run" type="submit" class="" value="Run">
+            </div>
+        </form>
+
+     </div>
+
+
 
 
 
 
 </div>
+
+
+
+
+<div id="goal">
+    <img src="static/images/goal.gif" alt="Goal light">
+</div>
+<div id="win">
+    <img src="static/images/win.gif" alt="Confetti">
+    <div class="center">
+        <p class="small text-white" id="musicCredit"></p>
+    </div>
+</div>
+<div id="loss">
+    <img src="static/images/loss.gif" alt="You lose!">
+</div>
+
+    <div id="scoreboard">
+    	<div class="game__only">
+    		<div id="flash" class="app__run">
+    		</div>
+    	</div>
+        <div class="scoreboard">
+    		<div id="flash" class="scoreboard__section">
+    			<div class="center">
+    				<h3>Game info</h3>
+    			</div>
+                <table class="app__table">
+					<thead>
+						<tr>
+							<th>Game Status</th>
+							<th class="game__only">Home</th>
+							<th class="game__only">Away</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td id="gamestatus"></td>
+							<td id="hometeam" class="game__only"></td>
+							<td id="awayteam" class="game__only"></td>
+						</tr>
+					</tbody>
+				</table>
+            </div>
+    		<div id="flash" class="scoreboard__section game__only">
+    		 	<div class="center">
+    		 		<h3>Scoreboard</h3>
+    		 	</div>
+				<table class="app__table">
+					<thead class="center">
+						<tr>
+							<th>Home</th>
+							<th>Away</th>
+						</tr>
+					</thead>
+					<tbody class="center">
+						<tr>
+							<td id="homescore"></td>
+							<td id="awayscore"></td>
+						</tr>
+					</tbody>
+				</table>
+    		</div>
+        </div>
+   	</div>
+
+
+    <div class="container wakelock">
+            <label class="keep__alive" for="wakeLock">Keep alive
+            <input type="checkbox" class="" data-status="off" id="wakeLock">
+            <span class="slider round"></span>
+            </label>
+            <p class="full__width center" id="wakeLockStatus"></p>
+    </div>
+
 
 
 {% endblock %}
