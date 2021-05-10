@@ -3,7 +3,7 @@ import json
 import time
 import requests
 from playsound import playsound
-from flask import Flask, redirect, url_for, render_template, request, session, flash
+from flask import Flask, redirect, url_for, render_template, request, session, flash, send_from_directory
 from flask_socketio import SocketIO, send, emit
 
 from goal_horn import *
@@ -148,6 +148,11 @@ def run():
 @app.route("/about")
 def about():
 	return render_template("about.html")
+
+# sitemap
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 if __name__ == '__main__':
