@@ -1,10 +1,11 @@
+* {scroll-behavior: smooth;}
+
 html {
-	scroll-behavior: smooth;
 	scrollbar-width: none; /* Firefox */
 }
 
 html::-webkit-scrollbar {
-	display: none
+	display: none;
 }
 
 body {
@@ -15,6 +16,7 @@ body {
 
 footer {
 	background-color: #00000095;
+	z-index: 10;
 }
 
 p, a, ol, ul, form, table, textarea, input, label, select {
@@ -45,9 +47,7 @@ a:hover {
 	transition: all 0.2s ease 0s
 }
 
-ul {
-	list-style-type: none;
-}
+ul {list-style-type: none;}
 
 input, select {
 	width: 100%;
@@ -119,30 +119,35 @@ nav > a:hover {
 	color: white;
 }
 
+.back__toTop {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 20px;
+	font-size: 2em;
+	z-index: 1;
+}
+
+.wrapper {
+	height: 100vh;
+	overflow-y: scroll;
+	scrollbar-color: #ffffff50 #00000095; /* Firefox */
+	scrollbar-width: thin; /* Firefox */
+	scroll-snap-type: y mandatory;
+}
+
 .container {
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
 	padding: 0 10%;
 }
 
-.full__width {
-	grid-column: span 12;
-}
-.half__width {
-	grid-column: span 6;
-}
+.full__width {grid-column: span 12;}
+.half__width {grid-column: span 6;}
 
-.center {
-	text-align: center;
-}
-
-.right {
-	text-align: right;
-}
-
-.left {
-	text-align: left;
-}
+.center {text-align: center;}
+.right {text-align: right;}
+.left {text-align: left}
 
 .footer__items {
 	grid-column: span 4;
@@ -155,10 +160,6 @@ nav > a:hover {
 	padding-bottom: 8px;
 	font-size: 1.2rem;
 }
-
-/*.footer__copy {
-	font-size: 0.85rem;
-}*/
 
 .footer__copy.git {
 	text-align: center;
@@ -173,19 +174,6 @@ nav > a:hover {
 	font-weight: 100;
 }
 
-.scroller {
-	height: 100vh;
-	overflow-y: scroll;
-	scrollbar-width: none; /* Firefox */
-	scroll-snap-type: y mandatory;
-}
-
-.standings {
-	max-height: 75vh;
-	overflow-y: scroll;
-	scrollbar-width: none; /* Firefox */
-}
-
 .section {
 	height: 100vh;
 	scrollbar-width: none; /* Firefox */
@@ -193,9 +181,68 @@ nav > a:hover {
 	overflow-y: scroll;
 }
 
-.scroller::-webkit-scrollbar {display: none;}
-.standings::-webkit-scrollbar {display: none;}
+.scroll {
+	max-height: 75vh;
+	width: -webkit-max-content;
+	width: -moz-max-content;
+	width: max-content;
+	padding: 0 15px 0 25px;
+	margin: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	scrollbar-color: #ffffff50 #00000095; /* Firefox */
+	scrollbar-width: thin; /* Firefox */
+}
+
+
+/*.wrapper::-webkit-scrollbar {display: none;} */
 .section::-webkit-scrollbar {display: none;}
+
+/* Designing for scroll-bar */
+.scroll::-webkit-scrollbar, .wrapper::-webkit-scrollbar {
+	/*display: none;*/
+    width: 6px;
+    /*margin-right: 25vw;*/
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track, .wrapper::-webkit-scrollbar-track {
+    background: #00000095;
+    border-radius: 6px;
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb, .wrapper::-webkit-scrollbar-thumb {
+    background: #ffffff50;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover, .wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.home__links.start {background-color: #58b82585;}
+.home__links.start:hover {background-color: #58b825;}
+.home__links.slate {background-color: #2558B885;}
+.home__links.slate:hover {background-color: #2558B8;}
+.home__links.standings {background-color: #b8253185;}
+.home__links.standings:hover {background-color: #b82531;}
+
+.home__links:hover {
+	color: inherit !important;
+	transition: all .3s ease 0s;
+}
+
+.home__links {
+	text-align: center;
+	grid-column: span 4;
+	margin: 1em;
+	padding: 0.5em;
+	font-weight: bold;
+	border-radius: 0.5em;
+	transition: all .3s ease 0s;
+}
 
 .home__table {
 	margin: 10px auto;
@@ -206,18 +253,7 @@ nav > a:hover {
 
 .team__select, .submit__btn {width: 25%}
 
-
-.app__run { /* LOADING BAR WHEN APP IS ON */
-	height: 10px;
-	width: 100%;
-	animation: run 5s linear infinite;
-}
-
-.card.app__run {
-	box-shadow: none;
-}
-
-.bg__home { /* HOME PAGE BACKGROUND */
+.bg__home { /* BACKGROUND FOR WHOLE SITE */
 	position: fixed;
 	background-image: url("../images/ice_background.png");
 	height: 100vh;
@@ -226,26 +262,22 @@ nav > a:hover {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	z-index: -10;
+	z-index: -100;
 }
 
-.hero {
-	padding: 0 10%;
-}
+.hero {padding: 0 12%;}
 
-.top > .title {
-	/*top: 0;*/
-	padding: 2rem 0;
-}
-
+.title.home {z-index: -1;}
 .title {
 	position: relative;
 	top: 25vh;
 	animation: fadeIn linear 1s;
-	/*background-color: #ffffff55;*/
 	padding: 10px;
+	margin: 10px;
 	border-radius: 5px;
 }
+
+.title.main {z-index: 0}
 
 .title__text {
 	animation: fadeIn linear 2s;
@@ -253,13 +285,11 @@ nav > a:hover {
 	width: 50%;
 }
 
-
-
 .home__form {
 	margin: 0 auto;
 	position: relative;
 	top: 25vh;
-	padding: 0 10%;
+	padding: 0 12%;
 }
 
 
@@ -271,6 +301,14 @@ nav > a:hover {
 
 
 /* APP CSS */
+
+.app__run { /* LOADING BAR WHEN APP IS ON */
+	height: 10px;
+	width: 100%;
+	animation: run 5s linear infinite;
+}
+
+.card.app__run {box-shadow: none;}
 
 .goal {
 	animation: goalBorder 1s linear infinite !important;
@@ -340,10 +378,16 @@ input[type=checkbox] {
 }
 
 @media only screen and (max-width: 1600px) {
-	.top > .title {top: 0;}
+	.top > .title {
+		top: 0;
+		border-bottom: 1px solid #ffffff50;
+		border-radius: 0;
+	}
+	.home__links{grid-column: span 12}
 }
 
 @media only screen and (max-width: 765px) {
+	h1 {font-size: 2.2rem;}
 	.top__sm > .title {top: 10vh;}
 	.team__select, .submit__btn {width: 55%}
 	.recieve__update {left: 75vw;}
@@ -352,10 +396,6 @@ input[type=checkbox] {
 		border-right: none !important;
 		border-bottom: 1px solid #dee2e6;
 		margin: 0 5%;
-	}
-
-	.title__text {
-		width: 100%;
 	}
 
 	.footer__copy {
@@ -368,6 +408,15 @@ input[type=checkbox] {
 		border-bottom: 1px solid whitesmoke;
 	}
 
+	.title__text {
+		width: 100%;
+	}
+
+	.scroll {
+		width: auto;
+		padding: 0 8px 8px 0;
+	}
+
 	.app__table {
 		width: 85%;
 	}
@@ -376,7 +425,7 @@ input[type=checkbox] {
 
 @media only screen and (max-width: 450px) {
 	p {font-size: initial;}
-	h1 {font-size: 2.2rem;}
+
 }
 
 @keyframes run { /*  LOADING BAR ANIMATION */

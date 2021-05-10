@@ -1,0 +1,32 @@
+{
+  "name": "NHL Companion",
+  "short_name": "Goal Horn",
+  "description": "Follow along with your favorite team's game and sound the goal horn automatically!",
+  "theme_color": "#25293b",
+  "background_color": "#25293b",
+  "icons": [
+    {
+        "src": "/static/images/logo64x64.png",
+        "type": "image/png",
+        "sizes": "64x64"
+      },
+      {
+        "src": "/static/images/logo96x96.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      },
+      {
+        "src": "/static/images/logo192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/static/images/logo512x512.png",
+        "type": "image/png",
+        "sizes": "511x511"
+      }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

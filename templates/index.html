@@ -1,28 +1,38 @@
 {% extends "base.html" %}
-{% block title %}NHL Companion | Dashboard{% endblock %}
-{% block description %}{% endblock %}
+{% block title %}NHL Companion | Start{% endblock %}
+{% block description %}The NHL Companion provides the ultimate fan experience. Automatically play your team's goal horn!{% endblock %}
 {% set active_page = "index" %}
-{% block scripts %}{% endblock %}
+{% block scripts %}
+
+
+{% endblock %}
 {% block content %}
 
 <div class="bg__home"></div>
 
+<!-- <div class="back__toTop">
+    <a href="#start" title="Run the app!">Start Here!</a>
+</div> -->
 
-<div class="scroller">
+<div class="wrapper">
     <div class="section">
-        <div class="hero">
-            <div class="title">
+        <div class="hero top__sm">
+            <div class="title home main">
                 <h1>NHL Companion</h1>
                 <p class="title__text">The NHL Companion is the best way to follow your favorite Hockey team. Check today's slate of games around the NHL, check the standings, and use our app to blast your Goal Horn when your team scores!</p>
-                <p class="title__text">Scroll to get started.</p>
+                <div class="title__text container">
+                        <a class="home__links start" href="#start" title="Start">Start</a>
+                        <a class="home__links slate" href="#todaysSlate" title="Start">Today's Games</a>
+                        <a class="home__links standings" href="#standings" title="Start">Standings</a>
+                </div>
             </div>
         </div>
     </div>
 
 
-    <div class="section">
+    <div id="start" class="section">
         <div class="hero">
-            <div class="title">
+            <div class="title home">
                 <h1>Select your team.</h1>
                 <p class="title__text">Follow your team's game with the NHL Companion!</p>
             </div>
@@ -44,15 +54,17 @@
 
     </div>
 
-    <div class="section">
+    <div id="todaysSlate" class="section">
         <div class="hero top">
-            <div class="title">
+            <div class="title home">
                 <h1>Today's Slate.</h1>
                 <p class="title__text">All of today's NHL action.</p>
             </div>
         </div>
-                    
-        <div class="standings">
+        <div class="scroll">
+            <h2 class="center">
+                {{date}} Schedule                        
+            </h2>
             <table class="home__table">
                 <thead>
                     <tr>
@@ -82,18 +94,17 @@
                 </tbody>
             </table>
         </div>
-    
     </div>
 
 
-    <div class="section">
+    <div id="standings" class="section">
         <div class="hero top">
-            <div class="title">
+            <div class="title home">
                 <h1>Standings.</h1>
                 <p class="title__text">Where does your team stack up?</p>
             </div>
         </div>
-        <div class="standings">
+        <div class="scroll">
             {% for division in divisions %}
             <h2 class="center">
                 {{division}}                        

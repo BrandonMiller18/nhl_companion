@@ -1,6 +1,8 @@
 __pycache__
 venv
 .env
-*.json
+sched.json
+standings.json
+team_data.json
 
 misc.py
