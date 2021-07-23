@@ -384,6 +384,7 @@ input[type=checkbox] {
 		border-radius: 0;
 	}
 	.home__links{grid-column: span 12}
+	.scroll {margin-top: 1rem;}
 }
 
 @media only screen and (max-width: 765px) {

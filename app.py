@@ -39,8 +39,13 @@ def home():
 
 	r = requests.get(base_url + "/api/v1/schedule")
 	schedule = r.json()
-	date = schedule["dates"][0]["date"] # TODO: reformat date 
-	schedule = schedule["dates"][0]["games"]
+	
+	try:
+		date = schedule["dates"][0]["date"]
+		schedule = schedule["dates"][0]["games"]
+	except:
+		date = "No Games"
+		schedule = "No Games"
 
 	r = requests.get(base_url + "/api/v1/standings")
 	standings = r.json()

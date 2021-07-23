@@ -54,6 +54,7 @@
     </div>
 
     <div id="todaysSlate" class="section">
+        {% if schedule != "No Games" %}
         <div class="hero top">
             <div class="title home">
                 <h1>Today's Slate.</h1>
@@ -93,6 +94,14 @@
                 </tbody>
             </table>
         </div>
+        {% else %}
+        <div class="hero top">
+            <div class="title home">
+                <h1>No Games Today.</h1>
+                <p class="title__text">Please check back again soon.</p>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
 
