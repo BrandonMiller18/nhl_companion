@@ -19,7 +19,7 @@ footer {
 	z-index: 10;
 }
 
-p, a, ol, ul, form, table, textarea, input, label, select {
+p, a, ol, ul, form, table, textarea, input, label, select, li {
 	font-family: 'Roboto', sans-serif;
 	font-size: 1.2em;
 	margin: 0;
@@ -35,8 +35,10 @@ h1, h2, h3, h4, h5 {
 	margin: 0;
 }
 
+nav a, footer a {color: snow;}
+
 a {
-	color: snow;
+	color: #ff7300;
 	text-decoration: none;
 	transition: all 0.2s ease 0s;
 }
@@ -235,6 +237,7 @@ nav > a:hover {
 }
 
 .home__links {
+	color: snow;
 	text-align: center;
 	grid-column: span 4;
 	margin: 1em;
@@ -283,6 +286,21 @@ nav > a:hover {
 	animation: fadeIn linear 2s;
 	padding: 5px 0;
 	width: 50%;
+}
+
+.title__text li {
+	animation: fadeIn linear 2s;
+	padding: 5px 0;
+	width: 50%;
+	list-style: none;
+}
+
+.team__info-section {
+	padding: 2rem 0;
+}
+
+.team__info-section h2 {
+	padding: 1rem 0;
 }
 
 .home__form {

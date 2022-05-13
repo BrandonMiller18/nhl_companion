@@ -154,6 +154,22 @@ def run():
 def about():
 	return render_template("about.html")
 
+@app.route("/teams")
+def teams():
+	r = requests.get(base_url + "/api/v1/teams")
+	teams = r.json()
+	teams = teams["teams"]
+	return render_template(
+		"teams.html",
+		teams=teams)
+
+@app.route("/teams/<team_name>")
+def team_page(team_name):
+	return render_template(
+		"team_info.html",
+		team_name=team_name)
+
+
 # sitemap
 @app.route('/sitemap.xml')
 def static_from_root():

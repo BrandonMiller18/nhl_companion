@@ -34,7 +34,7 @@ def get_teams(data, room):
 def get_team(abr):
 	r = requests.get(base_url + "/api/v1/teams")
 	data = r.json()
-		
+
 	for team in data['teams']:
 		if team['abbreviation'] == abr:
 			team_id = team['id']
