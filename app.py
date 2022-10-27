@@ -53,22 +53,19 @@ def home():
 		date = datetime.strptime(date, "%Y-%m-%d")
 		date = date.strftime("%a %b %d, %Y")
 		schedule = schedule["dates"][0]["games"]
+		game_times = []
+		for game in schedule:
+			utc = game["gameDate"]
+			utc = datetime.fromisoformat(utc[:-1])
+			from_zone = tz.gettz("UTC")
+			to_zone = tz.gettz("America/Chicago")
+			utc = utc.replace(tzinfo=from_zone)
+			game_time = utc.astimezone(to_zone)
+			game_time = game_time.strftime("%I:%M %p")
+			game_times.append(game_time)
 	except:
 		date = "No Games"
 		schedule = "No Games"
-
-
-	game_times = []
-	for game in schedule:
-		utc = game["gameDate"]
-		utc = datetime.fromisoformat(utc[:-1])
-		from_zone = tz.gettz("UTC")
-		to_zone = tz.gettz("America/Chicago")
-		utc = utc.replace(tzinfo=from_zone)
-		game_time = utc.astimezone(to_zone)
-		game_time = game_time.strftime("%I:%M %p")
-		game_times.append(game_time)
-
 
 	print(game_times, flush=True)
 
