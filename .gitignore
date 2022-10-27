@@ -1,5 +1,6 @@
 __pycache__
 venv
+test_files
 .env
 sched.json
 standings.json

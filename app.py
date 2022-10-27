@@ -2,6 +2,8 @@ import os
 import json
 import time
 import requests
+from datetime import datetime
+from dateutil import tz
 from playsound import playsound
 from flask import Flask, redirect, url_for, render_template, request, session, flash, send_from_directory
 from flask_socketio import SocketIO, send, emit
@@ -10,6 +12,7 @@ from goal_horn import *
 
 
 app = Flask(__name__)
+app.jinja_env.filters['zip'] = zip
 app.config.from_pyfile('config.py')
 socketio = SocketIO(app)
 
@@ -28,24 +31,45 @@ def handle_message(msg):
 
 @app.route("/", methods=["POST", "GET"])
 def home():
+	
+	# get abbreviations for all teams
 	r = requests.get(base_url + "/api/v1/teams")
 	teams = r.json()
 	teams = teams["teams"]
 	abbreviations = []
-	i = 0
+	i = 0 # iterator to go through entire list - will allow for scale for expansion teams
 	for team in teams:
 		abbreviations.append(teams[i]['abbreviation'])
 		i += 1
 
+	# get todays schedule from API
 	r = requests.get(base_url + "/api/v1/schedule")
 	schedule = r.json()
 	
+	# get date and format it to look pretty
+	# if this fails we assume there are no games
 	try:
 		date = schedule["dates"][0]["date"]
+		date = datetime.strptime(date, "%Y-%m-%d")
+		date = date.strftime("%a %b %d, %Y")
 		schedule = schedule["dates"][0]["games"]
+		game_times = []
+		for game in schedule:
+			utc = game["gameDate"]
+			utc = datetime.fromisoformat(utc[:-1])
+			from_zone = tz.gettz("UTC")
+			to_zone = tz.gettz("America/Chicago")
+			utc = utc.replace(tzinfo=from_zone)
+			game_time = utc.astimezone(to_zone)
+			game_time = game_time.strftime("%I:%M %p")
+			game_times.append(game_time)
 	except:
 		date = "No Games"
 		schedule = "No Games"
+
+
+
+	print(game_times, flush=True)
 
 	r = requests.get(base_url + "/api/v1/standings")
 	standings = r.json()
@@ -93,6 +117,7 @@ def home():
 	return render_template("index.html",
 		abbreviations=sorted(abbreviations),
 		schedule=schedule,
+		game_times=game_times,
 		divisions=divisions,
 		standings=team_stats,
 		date=date,
@@ -153,21 +178,6 @@ def run():
 @app.route("/about")
 def about():
 	return render_template("about.html")
-
-@app.route("/teams")
-def teams():
-	r = requests.get(base_url + "/api/v1/teams")
-	teams = r.json()
-	teams = teams["teams"]
-	return render_template(
-		"teams.html",
-		teams=teams)
-
-@app.route("/teams/<team_name>")
-def team_page(team_name):
-	return render_template(
-		"team_info.html",
-		team_name=team_name)
 
 
 # sitemap

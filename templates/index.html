@@ -88,10 +88,11 @@
                         <th>Home</th>
                         <th></th>
                         <th>Away</th>
+                        <th>Time</th>
                     </tr>   
                 </thead>    
                 <tbody>                 
-                {% for game in schedule %}
+                {% for game, time in schedule|zip(game_times) %}
                     {% set home = game['teams']['home']['team']['name'] %}
                     {% set away = game['teams']['away']['team']['name'] %}
                     {% if session['team_name'] == home or session['team_name'] == away %}
@@ -99,12 +100,14 @@
                             <td>{{game['teams']['home']['team']['name']}} </td>
                             <td>vs.</td>
                             <td>{{game['teams']['away']['team']['name']}}</td>
+                            <td>{{time}}</td>
                         </tr>
                     {% else %}
                         <tr>
                             <td>{{game['teams']['home']['team']['name']}} </td>
                             <td>vs.</td>
                             <td>{{game['teams']['away']['team']['name']}}</td>
+                            <td>{{time}}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}
