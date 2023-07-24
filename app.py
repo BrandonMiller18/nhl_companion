@@ -66,8 +66,7 @@ def home():
 	except:
 		date = "No Games"
 		schedule = "No Games"
-
-	# print(game_times, flush=True)
+		game_times = "No Games"
 
 	r = requests.get(base_url + "/api/v1/standings")
 	standings = r.json()
