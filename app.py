@@ -67,7 +67,7 @@ def home():
 		date = "No Games"
 		schedule = "No Games"
 
-	print(game_times, flush=True)
+	# print(game_times, flush=True)
 
 	r = requests.get(base_url + "/api/v1/standings")
 	standings = r.json()
